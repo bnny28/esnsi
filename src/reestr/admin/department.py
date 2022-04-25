@@ -37,6 +37,8 @@ class DepartmentAdmin(DjangoObjectActions, ImportExportMixin, admin.ModelAdmin):
             for service in services:
                 bulk_list.append(EsnRecord(department=dep, service=service))
         EsnRecord.objects.bulk_create(bulk_list)
+        return HttpResponseRedirect(
+            reverse('admin:%s_%s_changelist' % (self.model._meta.app_label, 'esnrecord')))
 
     make_esnsi_records.label = "Сформировать записи ЕСНСИ"  # optional
 
@@ -83,12 +85,24 @@ class DepartmentAdmin(DjangoObjectActions, ImportExportMixin, admin.ModelAdmin):
             obj.phones = ''.join(re.findall(r"\d|,|;", obj.phones))
             obj.save()
 
+    @admin.action(description='Создать на основе')
+    def make_phones(self, request, queryset):
+        sample = queryset.first()
+        dep = Department(
+            organization=sample.organization,
+            address=sample.address,
+            phones=sample.phones,
+            email=sample.email)
+        dep.save()
+        return HttpResponseRedirect(
+            reverse("admin:%s_%s_change" % (self.model._meta.app_label, self.model._meta.model_name), args=(dep.id,)))
+
     formfield_overrides = {
         models.TextField: {'widget': Textarea(attrs={'rows': 2, 'cols': 60})},
         models.CharField: {'widget': TextInput(attrs={'size': '60'})},
     }
 
-    actions = []
+    actions = [make_phones]
     list_display = ('org_short_title', 'service_codes', 'address',)
     list_display_links = ('org_short_title', 'service_codes',)
     search_fields = ('phones', 'address', 'organization__title', 'organization__code', 'services__service_code')

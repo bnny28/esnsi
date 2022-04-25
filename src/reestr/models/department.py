@@ -76,4 +76,10 @@ class Department(models.Model):
     class Meta:
         verbose_name = 'Подразделение'
         verbose_name_plural = 'Подразделения'
-        ordering = ['-created_at']
+        ordering = ['organization', 'address']
+
+
+# @receiver(post_save, sender=Department, dispatch_uid="update_stock_count")
+# def update_stock(sender, instance, **kwargs):
+#     time.sleep(3)
+#     print(len(instance.services.values()))

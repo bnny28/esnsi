@@ -6,6 +6,7 @@ from django_admin_display import admin_display
 class EsnRecord(models.Model):
     service = models.ForeignKey('Service', on_delete=models.CASCADE, verbose_name='Услуга')
     department = models.ForeignKey('Department', on_delete=models.CASCADE, verbose_name='Подразделение')
+    # organization = models.ForeignKey('Organization', on_delete=models.CASCADE, verbose_name='Организация')
 
     @property
     @admin_display(short_description="Организация", )
@@ -37,15 +38,15 @@ class EsnRecord(models.Model):
     def dep_email(self):
         return self.department.email
 
-    def validate_unique(self, *args, **kwargs):
-        qs = EsnRecord.objects.filter(service=self.service)
-        if qs.filter(department__organization=self.department.organization).exists():
-            raise ValidationError({'service': ['Код услуги должен быть уникальным для организации', ]})
-        super(EsnRecord, self).validate_unique(*args, **kwargs)
-
-    def save(self, *args, **kwargs):
-        self.validate_unique()
-        super(EsnRecord, self).save(*args, **kwargs)
+    # def validate_unique(self, *args, **kwargs):
+    #     qs = EsnRecord.objects.filter(service=self.service)
+    #     if qs.filter(department__organization=self.department.organization).exists():
+    #         raise ValidationError({'service': ['Код услуги должен быть уникальным для организации', ]})
+    #     super(EsnRecord, self).validate_unique(*args, **kwargs)
+    #
+    # def save(self, *args, **kwargs):
+    #     self.validate_unique()
+    #     super(EsnRecord, self).save(*args, **kwargs)
 
     def __str__(self):
         return str(self.department.organization)
