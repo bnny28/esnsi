@@ -1,4 +1,7 @@
 from django.contrib import admin
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+from django_object_actions import DjangoObjectActions
 from import_export import resources, fields
 from import_export.admin import ExportMixin
 from import_export.widgets import ForeignKeyWidget
@@ -53,8 +56,23 @@ class EsnRecordResource(resources.ModelResource):
 
 
 @admin.register(EsnRecord)
-class EsnRecordAdmin(ExportMixin, admin.ModelAdmin):
+class EsnRecordAdmin(DjangoObjectActions, ExportMixin, admin.ModelAdmin):
     resource_class = EsnRecordResource
+
+    def del_all(self, request, queryset):
+        EsnRecord.objects.all().delete()
+
+    del_all.label = "Удалить все записи ЕСНСИ"  # optional
+
+    def redirect_to_export(self, request, obj):
+        return HttpResponseRedirect(reverse('admin:%s_%s_export' % self.get_model_info()))
+
+    redirect_to_export.label = "Экспорт"
+
+    changelist_actions = ('del_all', 'redirect_to_export')
+
+    search_fields = ('department__phones', 'department__address', 'department__organization__title',
+                     'department__organization__code', 'service__service_code')
     list_display = ('org_code', 'service_code', 'org_short_title', 'dep_address', 'dep_phones', 'dep_email',)
     list_display_links = ('service_code',)
     autocomplete_fields = ['service', 'department', ]
