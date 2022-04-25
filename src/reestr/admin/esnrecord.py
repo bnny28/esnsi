@@ -72,7 +72,8 @@ class EsnRecordAdmin(DjangoObjectActions, ExportMixin, admin.ModelAdmin):
     changelist_actions = ('del_all', 'redirect_to_export')
 
     search_fields = ('department__phones', 'department__address', 'department__organization__title',
-                     'department__organization__code', 'service__service_code')
+                     'department__organization__code', 'service__service_code',
+                     'department__organization__short_title',)
     list_display = ('org_code', 'service_code', 'org_short_title', 'dep_address', 'dep_phones', 'dep_email',)
     list_display_links = ('service_code',)
     autocomplete_fields = ['service', 'department', ]

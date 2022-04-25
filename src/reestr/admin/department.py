@@ -105,7 +105,8 @@ class DepartmentAdmin(DjangoObjectActions, ImportExportMixin, admin.ModelAdmin):
     actions = [make_phones]
     list_display = ('org_short_title', 'service_codes', 'address',)
     list_display_links = ('org_short_title', 'service_codes',)
-    search_fields = ('phones', 'address', 'organization__title', 'organization__code', 'services__service_code')
+    search_fields = ('phones', 'address', 'organization__short_title', 'organization__title', 'organization__code',
+                     'services__service_code')
     list_editable = ('address',)
     list_filter = ('services__service_code',)
     filter_horizontal = ('services',)
