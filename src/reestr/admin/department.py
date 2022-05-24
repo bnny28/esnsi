@@ -97,6 +97,10 @@ class DepartmentAdmin(DjangoObjectActions, ImportExportMixin, admin.ModelAdmin):
         return HttpResponseRedirect(
             reverse("admin:%s_%s_change" % (self.model._meta.app_label, self.model._meta.model_name), args=(dep.id,)))
 
+    def get_queryset(self, request):
+        qs = super(DepartmentAdmin, self).get_queryset(request)
+        return qs.prefetch_related('services')
+
     formfield_overrides = {
         models.TextField: {'widget': Textarea(attrs={'rows': 2, 'cols': 60})},
         models.CharField: {'widget': TextInput(attrs={'size': '60'})},
@@ -110,4 +114,4 @@ class DepartmentAdmin(DjangoObjectActions, ImportExportMixin, admin.ModelAdmin):
     list_editable = ('address',)
     list_filter = ('services__service_code',)
     filter_horizontal = ('services',)
-    autocomplete_fields = ['organization']
+    autocomplete_fields = ['organization', ]
