@@ -12,6 +12,8 @@ class Organization(models.Model):
     title = models.TextField(max_length=500, unique=True, verbose_name='Полное наименование*')
     short_title = models.TextField(max_length=500, unique=True, verbose_name='Краткое наименование*')
     inn = models.PositiveBigIntegerField(unique=True, verbose_name='ИНН*')
+    kpp = models.PositiveIntegerField(null=True, blank=True, verbose_name='КПП')
+    oktmo = models.PositiveBigIntegerField(null=True, blank=True, verbose_name='ОКТМО')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Время создания')
 
     def clean(self):
@@ -23,6 +25,12 @@ class Organization(models.Model):
         if len(str(self.inn)) != 10:
             raise ValidationError(
                 {'inn': "ИНН должен быть 10 цифр ровно"})
+        if self.kpp and len(str(self.kpp)) != 9:
+            raise ValidationError(
+                {'kpp': "КПП должен быть 9 цифр ровно"})
+        if self.oktmo and len(str(self.oktmo)) != 8 and len(str(self.oktmo)) != 11:
+            raise ValidationError(
+                {'oktmo': "ОКТМО должен быть 8 или 11 цифр"})
 
     #
     # @property

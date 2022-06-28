@@ -23,6 +23,8 @@ class EsnRecordResource(resources.ModelResource):
                          widget=ForeignKeyWidget(Department, 'email'))
     regokato = fields.Field(column_name='REGOKATO')
     inn = fields.Field(column_name='INN')
+    kpp = fields.Field(column_name='KPP')
+    oktmo = fields.Field(column_name='OKTMO')
     type_organization = fields.Field(column_name='TYPE_SERVICE_CODE', attribute='department',
                                      widget=ForeignKeyWidget(Department, 'services_type'))
 
@@ -41,6 +43,14 @@ class EsnRecordResource(resources.ModelResource):
     @staticmethod
     def dehydrate_inn(esnrecord):
         return str(esnrecord.department.organization.inn)
+
+    @staticmethod
+    def dehydrate_kpp(esnrecord):
+        return str(esnrecord.department.organization.kpp) if esnrecord.department.organization.kpp else ''
+
+    @staticmethod
+    def dehydrate_oktmo(esnrecord):
+        return str(esnrecord.department.organization.oktmo) if esnrecord.department.organization.oktmo else ''
 
     @staticmethod
     def dehydrate_title(esnrecord):
