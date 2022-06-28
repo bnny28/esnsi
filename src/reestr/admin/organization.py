@@ -26,8 +26,10 @@ class OrganizationAdmin(ImportExportMixin, admin.ModelAdmin):
     # change_actions = ('publish_this',)
 
     formfield_overrides = {
-        models.TextField: {'widget': Textarea(attrs={'rows': 1, 'cols': 100})},
+        models.TextField: {'widget': Textarea(attrs={'rows': 2, 'cols': 100})},
         models.CharField: {'widget': TextInput(attrs={'size': '98'})},
+        models.BigIntegerField: {'widget': TextInput(attrs={'size': '20'})},
+        models.IntegerField: {'widget': TextInput(attrs={'size': '20'})},
     }
 
     list_display = ('code', 'short_title', 'inn', 'title',)
