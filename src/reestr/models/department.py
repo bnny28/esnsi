@@ -46,7 +46,7 @@ class Department(models.Model):
                 p = item.strip()
                 if len(p) < 11:
                     new_pones.append(p[:-4] + '-' + p[-4:-2] + '-' + p[-2:])
-                elif p[:2] == '89':
+                elif p[:2] == '89' or p[:4] == '8800':
                     new_pones.append(p[0] + '(' + p[1:4] + ')' + p[4:7] + '-' + p[7:9] + '-' + p[-2:])
                 elif p[1:5] == '4842':
                     new_pones.append(p[0] + '(' + p[1:5] + ')' + p[5:7] + '-' + p[7:9] + '-' + p[-2:])
