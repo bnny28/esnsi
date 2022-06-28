@@ -1,1 +1,2 @@
+release: python manage.py migrate
 web: gunicorn esnsi.wsgi --log-file -
