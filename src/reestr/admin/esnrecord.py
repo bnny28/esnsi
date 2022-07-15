@@ -25,7 +25,7 @@ class EsnRecordResource(resources.ModelResource):
     inn = fields.Field(column_name='INN')
     kpp = fields.Field(column_name='KPP')
     oktmo = fields.Field(column_name='OKTMO')
-    availability = fields.Field(column_name='AVAILABILITY', attribute='department',
+    availability = fields.Field(column_name='Availability', attribute='department',
                                 widget=ForeignKeyWidget(Department, 'availability'))
     type_organization = fields.Field(column_name='TYPE_SERVICE_CODE', attribute='department',
                                      widget=ForeignKeyWidget(Department, 'services_type'))
