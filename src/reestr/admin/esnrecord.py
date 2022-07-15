@@ -25,6 +25,8 @@ class EsnRecordResource(resources.ModelResource):
     inn = fields.Field(column_name='INN')
     kpp = fields.Field(column_name='KPP')
     oktmo = fields.Field(column_name='OKTMO')
+    availability = fields.Field(column_name='AVAILABILITY', attribute='department',
+                                widget=ForeignKeyWidget(Department, 'availability'))
     type_organization = fields.Field(column_name='TYPE_SERVICE_CODE', attribute='department',
                                      widget=ForeignKeyWidget(Department, 'services_type'))
 
@@ -59,6 +61,10 @@ class EsnRecordResource(resources.ModelResource):
     @staticmethod
     def dehydrate_short_title(esnrecord):
         return str(esnrecord.department.organization.short_title)
+
+    @staticmethod
+    def dehydrate_availability(esnrecord):
+        return str(esnrecord.department.availability).lower()
 
     class Meta:
         model = EsnRecord

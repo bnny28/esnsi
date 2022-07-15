@@ -25,6 +25,7 @@ class Department(models.Model):
                                                ' -10000115350, -10000115362, -10000115364 Эти услуги только'
                                                ' в !ОТДЕЛЬНОМ ПОДРАЗДЕЛЕНИИ')
     note = models.TextField(max_length=500, blank=True, null=True, verbose_name='Примечания')
+    availability = models.BooleanField(default=True, null=False, blank=False, verbose_name='Доступно')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Время создания')
 
     def clean(self):
